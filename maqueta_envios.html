@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización de Envío</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJX3JXN7QQ2YXRw5VQXgPtb7hNflQMyc5mpozb8eqWYj4js/Sf55wa3jvyQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">Cotización de Envío</h2>
+    <form id="form-cotizacion">
+        <!-- Paso 1: Datos Básicos del Envío -->
+        <div class="form-step active" id="step1">
+            <h4>Datos Básicos del Envío</h4>
+            <div class="mb-3">
+                <label for="dimensiones" class="form-label">Dimensiones (cm)</label>
+                <input type="text" class="form-control" id="dimensiones" placeholder="Ej. 20x20x20" required>
+            </div>
+            <div class="mb-3">
+                <label for="peso" class="form-label">Peso (kg)</label>
+                <input type="number" class="form-control" id="peso" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigo-postal-origen" class="form-label">Código Postal de Origen</label>
+                <input type="text" class="form-control" id="codigo-postal-origen" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigo-postal-destino" class="form-label">Código Postal de Destino</label>
+                <input type="text" class="form-control" id="codigo-postal-destino" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="nextStep1">Siguiente</button>
+        </div>
+
+        <!-- Paso 2: Opciones de Envío -->
+        <div class="form-step" id="step2">
+            <h4>Opciones de Envío</h4>
+            <div class="mb-3">
+                <label for="opciones-envio" class="form-label">Seleccione el Servicio de Envío</label>
+                <select class="form-select" id="opciones-envio" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    <option value="DHL">DHL - $100</option>
+                    <option value="Estafeta">Estafeta - $90</option>
+                    <option value="RedPack">RedPack - $80</option>
+                    <option value="Fedex">Fedex - $110</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-secondary" id="prevStep2">Anterior</button>
+            <button type="button" class="btn btn-primary" id="nextStep2">Siguiente</button>
+        </div>
+
+        <!-- Paso 3: Información del Remitente y Destinatario -->
+        <div class="form-step" id="step3">
+            <h4>Información del Remitente y Destinatario</h4>
+            <div class="mb-3">
+                <label for="remitente-nombre" class="form-label">Nombre del Remitente</label>
+                <input type="text" class="form-control" id="remitente-nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="destinatario-nombre" class="form-label">Nombre del Destinatario</label>
+                <input type="text" class="form-control" id="destinatario-nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion-remitente" class="form-label">Dirección del Remitente</label>
+                <input type="text" class="form-control" id="direccion-remitente" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion-destinatario" class="form-label">Dirección del Destinatario</label>
+                <input type="text" class="form-control" id="direccion-destinatario" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono-remitente" class="form-label">Teléfono del Remitente</label>
+                <input type="tel" class="form-control" id="telefono-remitente" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono-destinatario" class="form-label">Teléfono del Destinatario</label>
+                <input type="tel" class="form-control" id="telefono-destinatario" required>
+            </div>
+            <button type="button" class="btn btn-secondary" id="prevStep3">Anterior</button>
+            <button type="button" class="btn btn-primary" id="nextStep3">Siguiente</button>
+        </div>
+
+        <!-- Paso 4: Confirmación -->
+        <div class="form-step" id="step4">
+            <h4>Confirmación</h4>
+            <p>¡El envío fue creado con éxito!</p>
+            <button type="button" class="btn btn-primary" id="restartButton">Volver a empezar</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Paso 1 -> Paso 2
+        $('#nextStep1').click(function () {
+            if ($('#dimensiones').val() && $('#peso').val() && $('#codigo-postal-origen').val() && $('#codigo-postal-destino').val()) {
+                $('#step1').removeClass('active');
+                $('#step2').addClass('active');
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        });
+
+        // Paso 2 -> Paso 3
+        $('#nextStep2').click(function () {
+            if ($('#opciones-envio').val()) {
+                $('#step2').removeClass('active');
+                $('#step3').addClass('active');
+            } else {
+                alert('Por favor, selecciona un servicio de envío.');
+            }
+        });
+
+        // Paso 3 -> Paso 4
+        $('#nextStep3').click(function () {
+            if ($('#remitente-nombre').val() && $('#destinatario-nombre').val() && $('#direccion-remitente').val() && $('#direccion-destinatario').val() && $('#telefono-remitente').val() && $('#telefono-destinatario').val()) {
+                $('#step3').removeClass('active');
+                $('#step4').addClass('active');
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        });
+
+        // Volver a la Etapa 1
+        $('#restartButton').click(function () {
+            $('#form-cotizacion')[0].reset();
+            $('#step4').removeClass('active');
+            $('#step1').addClass('active');
+        });
+
+        // Navegar hacia atrás
+        $('#prevStep2').click(function () {
+            $('#step2').removeClass('active');
+            $('#step1').addClass('active');
+        });
+        
+        $('#prevStep3').click(function () {
+            $('#step3').removeClass('active');
+            $('#step2').addClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>
